@@ -1,0 +1,119 @@
+{
+  "patients": [
+    {
+      "id": 1,
+      "name": "Maya Sharma",
+      "treatmentType": "Chemical Peel",
+      "startDate": "2026-09-15"
+    },
+    {
+      "id": 2,
+      "name": "Arjun Kapoor",
+      "treatmentType": "Laser Therapy",
+      "startDate": "2026-09-10"
+    },
+    {
+      "id": 3,
+      "name": "Priya Desai",
+      "treatmentType": "Microdermabrasion",
+      "startDate": "2026-09-12"
+    }
+  ],
+  "updates": [
+    {
+      "id": 1,
+      "patientId": 1,
+      "symptom": "Redness",
+      "severity": "Mild",
+      "timestamp": "2026-09-15T10:00:00",
+      "description": "Mild redness appeared after treatment",
+      "associatedSymptoms": []
+    },
+    {
+      "id": 2,
+      "patientId": 1,
+      "symptom": "Burning sensation",
+      "severity": "Moderate",
+      "timestamp": "2026-09-15T10:20:00",
+      "description": "Burning sensation started",
+      "associatedSymptoms": [
+        "Redness"
+      ]
+    },
+    {
+      "id": 3,
+      "patientId": 1,
+      "symptom": "Burning sensation",
+      "severity": "Severe",
+      "timestamp": "2026-09-15T10:45:00",
+      "description": "Burning sensation has increased significantly",
+      "associatedSymptoms": [
+        "Redness",
+        "Warmth"
+      ]
+    },
+    {
+      "id": 4,
+      "patientId": 1,
+      "symptom": "Swelling",
+      "severity": "Moderate",
+      "timestamp": "2026-09-15T11:00:00",
+      "description": "Swelling appeared in treated area",
+      "associatedSymptoms": [
+        "Redness",
+        "Burning sensation"
+      ]
+    },
+    {
+      "id": 5,
+      "patientId": 1,
+      "symptom": "Burning sensation",
+      "severity": "Severe",
+      "timestamp": "2026-09-15T11:20:00",
+      "description": "Burning sensation persists and remains severe",
+      "associatedSymptoms": [
+        "Redness",
+        "Swelling",
+        "Warmth"
+      ]
+    },
+    {
+      "id": 6,
+      "patientId": 2,
+      "symptom": "Itching",
+      "severity": "Mild",
+      "timestamp": "2026-09-10T14:00:00",
+      "description": "Minor itching in treated area",
+      "associatedSymptoms": []
+    },
+    {
+      "id": 7,
+      "patientId": 2,
+      "symptom": "Itching",
+      "severity": "Moderate",
+      "timestamp": "2026-09-10T15:30:00",
+      "description": "Itching has increased",
+      "associatedSymptoms": [
+        "Redness"
+      ]
+    },
+    {
+      "id": 8,
+      "patientId": 3,
+      "symptom": "Sensitivity",
+      "severity": "Mild",
+      "timestamp": "2026-09-12T09:00:00",
+      "description": "Skin sensitivity to touch",
+      "associatedSymptoms": []
+    },
+    {
+      "id": 9,
+      "patientId": 1,
+      "symptom": "Feeling very itchy on my wrist ",
+      "severity": "Moderate",
+      "timestamp": "2026-09-19T09:34:49.959Z",
+      "description": "I had some pineapple juice & then I felt itchy & tiny red bumps have poppedup on my skin",
+      "associatedSymptoms": []
+    }
+  ]
+}

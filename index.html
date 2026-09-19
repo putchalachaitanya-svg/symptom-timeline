@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Symptom Timeline</title>
+<style>
+body { font-family: sans-serif; margin: 0; background: #f5f5f5; }
+.header { background: #667eea; color: white; padding: 20px; text-align: center; }
+.container { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
+button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+button.active { background: #667eea; color: white; }
+.hidden { display: none; }
+.form-group { margin: 15px 0; }
+label { display: block; font-weight: bold; margin-bottom: 5px; }
+input, textarea, select { width: 100%; padding: 8px; border: 1px solid #ddd; font-family: inherit; }
+.submit { background: #667eea; color: white; border: none; cursor: pointer; padding: 10px 30px; }
+.message { padding: 10px; margin: 10px 0; background: #d4edda; color: #155724; }
+.grid { display: grid; grid-template-columns: 200px 1fr; gap: 20px; }
+.patient-item { padding: 10px; border: 1px solid #ddd; cursor: pointer; margin: 5px 0; }
+.patient-item.selected { background: #667eea; color: white; }
+.event { background: white; padding: 12px; margin: 10px 0; border-left: 4px solid #667eea; }
+.badge { padding: 2px 8px; border-radius: 3px; font-size: 12px; margin-left: 8px; }
+.mild { background: #d4edda; }
+.moderate { background: #fff3cd; }
+.severe { background: #f8d7da; }
+.time { font-size: 12px; color: #666; margin-top: 5px; }
+</style>
+</head>
+<body>
+<div class="header"><h1>Symptom Timeline</h1></div>
+<div class="container">
+<div>
+<button class="active" onclick="view('patient')">Patient</button>
+<button onclick="view('coordinator')">Coordinator</button>
+</div>
+
+<div id="patient">
+<h2>Record Symptom</h2>
+<div id="msg"></div>
+<form onsubmit="record(event)">
+<div class="form-group">
+<label>Symptom:</label>
+<input id="symptom" required>
+</div>
+<div class="form-group">
+<label>Severity:</label>
+<select id="severity">
+<option>Mild</option>
+<option>Moderate</option>
+<option>Severe</option>
+</select>
+</div>
+<div class="form-group">
+<label>Description:</label>
+<textarea id="desc"></textarea>
+</div>
+<button class="submit" type="submit">Save</button>
+</form>
+</div>
+
+<div id="coordinator" class="hidden">
+<h2>Timeline</h2>
+<div class="grid">
+<div id="list"></div>
+<div id="timeline"></div>
+</div>
+</div>
+</div>
+
+<script>
+function view(v) {
+document.getElementById('patient').classList.toggle('hidden', v !== 'patient');
+document.getElementById('coordinator').classList.toggle('hidden', v !== 'coordinator');
+if (v === 'coordinator') load();
+}
+
+function record(e) {
+e.preventDefault();
+fetch('http://localhost:3000/api/updates', {
+method: 'POST',
+headers: {'Content-Type': 'application/json'},
+body: JSON.stringify({
+patientId: 1,
+symptom: document.getElementById('symptom').value,
+severity: document.getElementById('severity').value,
+timestamp: new Date().toISOString(),
+description: document.getElementById('desc').value,
+associatedSymptoms: []
+})
+}).then(() => {
+document.getElementById('msg').innerHTML = '<div class="message">Saved!</div>';
+document.getElementById('symptom').value = '';
+document.getElementById('desc').value = '';
+setTimeout(() => document.getElementById('msg').innerHTML = '', 2000);
+}).catch(e => alert(e));
+}
+
+function load() {
+fetch('http://localhost:3000/api/patients').then(r => r.json()).then(p => {
+document.getElementById('list').innerHTML = p.map((x, i) => '<div class="patient-item ' + (i===0?'selected':'') + '" onclick="show(' + x.id + ', this)">' + x.name + '</div>').join('');
+if (p.length) show(p[0].id);
+});
+}
+
+function show(id, el) {
+if (el) {
+document.querySelectorAll('.patient-item').forEach(e => e.classList.remove('selected'));
+el.classList.add('selected');
+}
+fetch('http://localhost:3000/api/patients/' + id + '/updates').then(r => r.json()).then(u => {
+document.getElementById('timeline').innerHTML = u.map(x => '<div class="event"><strong>' + x.symptom + '</strong> <span class="badge ' + x.severity.toLowerCase() + '">' + x.severity + '</span><div class="time">' + new Date(x.timestamp).toLocaleString() + '</div><div>' + x.description + '</div></div>').join('');
+});
+}
+</script>
+</body>
+</html>
